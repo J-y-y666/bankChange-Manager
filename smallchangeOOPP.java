@@ -1,10 +1,19 @@
-package exams;
+package com.example.demo;
 
-public class smallchangeOOPP {
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+@SpringBootApplication
+
+public class Demo2Application {
+
     public static void main(String[] args) {
-        smallchangeOOP s = new smallchangeOOP();
-        s.mainDetial();
+SpringApplication.run(Demo2Application.class, args);
     }
+
 }
-
-
