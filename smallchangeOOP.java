@@ -1,106 +1,44 @@
-package exams;
-//零钱通 面向对象方法求解
+package com.example.demo;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Scanner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.stereotype.Service;
 
-public class smallchangeOOP {
-    boolean loop = true;
-    Scanner sc = new Scanner(System.in);
-    double money = 0;
-    double bouns = 0;
+import java.util.*;
 
-    Date date = new Date();
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm");
-    //时间格式化yyyy-MM-dd HH:mm
-    String choice = "";
-    String details = "";
-    String note = "";
-    String nod = "";
+@Service
+public class SmallChangeService {
 
-    public void mainDetial() {
-        do {
-            System.out.println("===========零钱通项目============");
-            System.out.println("1,零钱通菜单");
-            System.out.println("2,入账收益");
-            System.out.println("3，消费");
-            System.out.println("4，退出");
-            System.out.println("请选择（1-4）:");
-            choice = sc.next();
-            switch (choice) {
-                case "1":
-                    this.menu();
-                    break;
+    private double balance = 0;
+    private StringBuilder details = new StringBuilder();
 
-                case "2":
-                    this.entry();
-                    break;
+    private List<Map<String, Object>> transactions = new ArrayList<>();
 
+    public String income(double amount) {
+        balance += amount;
+        String record = String.format("收益入账 +%.2f %s %.2f",
+                amount, new Date(), balance);
+        details.append(record).append("\n");
 
-                case "3":
-                    this.pay();
-                    break;
+        Map<String, Object> tx = new HashMap<>();
+        tx.put("type", "INCOME");
+        tx.put("amount", amount);
+        tx.put("time", new Date());
+        transactions.add(tx);
 
-
-                case "4":
-                    this.exit();
-                    break;
-
-
-                default:
-
-                    System.out.println("输入有错误");
-            }
-        }
-        while (loop);
-
-    }
-    public void menu() {
-        System.out.println(details);
+        return record;
     }
 
-    public void entry() {
-        System.out.println("收益入账金额：");
-        money = sc.nextInt();
-        if (money <= 0) {
-            System.out.println("收益要大于零");
-            return;
-        }
+    public String outcome(double amount) {
 
-        bouns = money + bouns;
-
-        details += "\n收益入账\t+" + money + "\t" + sdf.format(date) + "\t" + bouns;
-
+        balance -= amount;
+        details.append(String.format("消费 +%.2f %s %.2f\n",
+                amount, new Date(), balance));
+        return "消费成功";
     }
 
-    public void pay() {
-        System.out.println("消费金额：");
-        money = sc.nextInt();
-        if (money > bouns || money <= 0) {
-            System.out.println("消费要在0-" + bouns);
-            return;
-        }
-        System.out.println("消费说明：");
-        note = sc.next();
-
-        bouns = bouns - money;
-        details += "\n" + note + "\t-" + money + "\t" + sdf.format(date) + "\t" + bouns;
-
+    public double getBalance() {
+        return balance;
     }
 
-    public void exit() {
-        while (true) {
-            System.out.println("确定退出吗？ 输入y/n");
-            nod = sc.next();
-            if ("y".equals(nod) || "n".equals(nod)) {
-                break;
-            }
-        }
-        if ("y".equals(nod)) {
-            loop = false;
 
-
-        }
-    }
 }
